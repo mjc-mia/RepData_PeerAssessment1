@@ -2,12 +2,23 @@ Reproducible Results - Peer Assessment 1
 ========================================
 
 ## Loading and Pre-processing Data
-Zipped file containing all data is included in the Github load, so just unzip and create data frame.
+If this is the first time the program is run, create directory for data files, download file, and unzip it.  The data frame is recreated each time the program is run.
+
+Note that the download is not necessary as the file is included in the Github repository--I just prefer this version that I can run at any time and places data files in a separate directory.
+
+Be careful with this code--older versions of RStudio give errors on the download.
 
 
 ```r
-unzip("activity.zip")
-activity = read.csv("activity.csv")
+if (!file.exists("data")) {
+        dir.create("data")
+        url = "http://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip"
+        download.file(url, destfile="./data/activity.zip")
+        unzip("./data/activity.zip", exdir="./data")
+        list.files("./data")
+
+}
+activity = read.csv("./data/activity.csv")
 ```
 
 ## What is mean total number of steps taken per day?
@@ -20,7 +31,7 @@ daily = dt[,list(total_steps=sum(steps, na.rm=T)),by=date]
 hist(daily$total_steps, main="Total Steps per Day", xlab="Steps")
 ```
 
-![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2-1.png) 
+![plot of chunk dailyAverage](figure/dailyAverage-1.png) 
 
 ```r
 mean=mean(daily$total_steps)
@@ -40,7 +51,7 @@ period = dt[,list(avg_steps=mean(steps, na.rm=T)), by=interval]
 xyplot(avg_steps~interval, data=period, type="l", ylab="Average Steps")
 ```
 
-![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png) 
+![plot of chunk analysisByPeriod](figure/analysisByPeriod-1.png) 
 
 ```r
 max_steps = max(period$avg_steps)
@@ -77,7 +88,7 @@ dailyR = dtR[,list(total_steps=sum(steps, na.rm=T)),by=date]
 hist(dailyR$total_steps, main="Total Steps per Day After Replacement", xlab="Steps")
 ```
 
-![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6-1.png) 
+![plot of chunk analysisAfterReplacement](figure/analysisAfterReplacement-1.png) 
 
 ```r
 meanR=mean(dailyR$total_steps)
@@ -99,4 +110,4 @@ period = dtR[,list(avg_steps=mean(steps, na.rm=T)), by=c("day","interval")]
 xyplot(avg_steps~interval | day, data=period, type="l", main="Weekend vs Weekday Activity", xlab="Interval", ylab="Average Steps", layout=c(1,2))
 ```
 
-![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7-1.png) 
+![plot of chunk analysisByWeekend](figure/analysisByWeekend-1.png) 
