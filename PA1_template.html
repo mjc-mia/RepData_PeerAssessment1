@@ -251,9 +251,10 @@ xyplot(avg_steps~interval, data=period, type=&quot;l&quot;, ylab=&quot;Average S
 
 <pre><code class="r">max_steps = max(period$avg_steps)
 max_row = which.max(period$avg_steps)
+max_interval = period[max_row, interval]
 </code></pre>
 
-<p>The maximum average steps per interval is 206.1698113, found at row 104.</p>
+<p>The maximum average steps per interval is 206.1698113 steps for period 835, found at row 104.</p>
 
 <h2>Imputing missing values</h2>
 

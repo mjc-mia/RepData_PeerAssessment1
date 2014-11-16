@@ -44,8 +44,9 @@ period = dt[,list(avg_steps=mean(steps, na.rm=T)), by=interval]
 xyplot(avg_steps~interval, data=period, type="l", ylab="Average Steps")
 max_steps = max(period$avg_steps)
 max_row = which.max(period$avg_steps)
+max_interval = period[max_row, interval]
 ```
-The maximum average steps per interval is `r max_steps`, found at row `r max_row`.
+The maximum average steps per interval is `r max_steps` steps for period `r max_interval`, found at row `r max_row`.
 
 ## Imputing missing values
 
